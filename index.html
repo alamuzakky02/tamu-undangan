@@ -1,0 +1,136 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Link Undangan Pernikahan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: satu kolom sempit, empat langkah berurutan dalam kartu */
+:root{--bg:#f6f3ec;--card:#fffdf8;--ink:#2b2a27;--mut:#6f6b61;--line:#ddd6c6;--ac:#4b6350;--ac2:#fff;--wa:#1f9d55;--warn:#a8613a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171a17;--card:#202420;--ink:#ecebe5;--mut:#a3a79d;--line:#363c35;--ac:#9fc0a4;--ac2:#14201a;--wa:#3ec17a;--warn:#e0a07a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171a17;--card:#202420;--ink:#ecebe5;--mut:#a3a79d;--line:#363c35;--ac:#9fc0a4;--ac2:#14201a;--wa:#3ec17a;--warn:#e0a07a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:22px;margin:4px 0 2px;text-wrap:balance}
+.sub{color:var(--mut);font-size:14px;margin:0 0 18px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.step h2{font-size:16px;margin:0 0 10px;display:flex;gap:10px;align-items:center}
+.n{width:26px;height:26px;border-radius:50%;background:var(--ac);color:var(--ac2);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+label{display:block;font-size:13px;color:var(--mut);margin:0 0 6px}
+input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:130px;resize:vertical}
+#tpl{min-height:230px;font-size:15px}
+input:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.hint{font-size:13px;color:var(--mut);margin:8px 0 0}
+.warn{color:var(--warn)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{font:inherit;font-size:14.5px;border-radius:999px;border:1px solid var(--ac);background:transparent;color:var(--ac);padding:9px 16px;cursor:pointer}
+.btn{display:inline-block;text-decoration:none;font-size:14.5px;border-radius:999px;border:1px solid var(--ac);color:var(--ac);padding:9px 16px;cursor:pointer}
+.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.sm{padding:7px 13px;font-size:13.5px}
+a.btn:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.chip{display:inline-block;font-size:12.5px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:2px 4px 2px 0;color:var(--mut);cursor:pointer}
+.prev{background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;white-space:pre-wrap;font-size:14.5px;margin-top:12px;overflow-wrap:anywhere}
+.g{border-top:1px solid var(--line);padding:12px 0}
+.g:first-child{border-top:0}
+.gn{font-weight:600;word-break:break-word}
+.gl{font-size:12.5px;color:var(--mut);word-break:break-all;margin:2px 0 8px}
+.g.done .gn::after{content:" ✓ terkirim";color:var(--wa);font-weight:400;font-size:13px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.cnt{font-size:14px;color:var(--mut)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style>
+
+<main>
+<h1>Pembuat Link Undangan per Tamu</h1>
+<p class="sub">Satu link undangan, nama tamu otomatis tampil di sampul. Tinggal kirim lewat WhatsApp.</p>
+
+<section class="step">
+<h2><span class="n">1</span>Masukkan link undangan</h2>
+<label for="base">Link undangan Anda</label>
+<input id="base" type="url" inputmode="url" autocomplete="off">
+<p class="hint" id="bh">Tempel link undangan yang sudah dipublikasikan. Bagian setelah tanda # akan diganti otomatis.</p>
+</section>
+
+<section class="step">
+<h2><span class="n">2</span>Masukkan daftar tamu</h2>
+<label for="list">Satu tamu per baris</label>
+<textarea id="list"></textarea>
+<p class="hint">Opsional: tambahkan nomor WhatsApp setelah tanda <b>|</b> agar pesan langsung terbuka ke kontak tersebut (08…, 8…, atau 62…).</p>
+<p class="hint" id="lh"></p>
+</section>
+
+<section class="step">
+<h2><span class="n">3</span>Format chat WhatsApp</h2>
+<label for="tpl">Isi pesan (bisa diedit)</label>
+<textarea id="tpl"></textarea>
+<div style="margin-top:8px"><span class="chip" data-i="{nama}">+ {nama}</span><span class="chip" data-i="{link}">+ {link}</span><span class="chip" data-i="*tebal*">*tebal*</span><span class="chip" data-i="_miring_">_miring_</span></div>
+<p class="hint">{nama} dan {link} diganti otomatis untuk tiap tamu. Di WhatsApp, *teks* menjadi tebal dan _teks_ menjadi miring.</p>
+<div class="row"><button id="rst" class="sm">Kembalikan format awal</button></div>
+<label style="margin-top:14px">Pratinjau (tamu pertama)</label>
+<div class="prev" id="pv">—</div>
+</section>
+
+<section class="step">
+<h2><span class="n">4</span>Menu share undangan</h2>
+<div class="bar"><span class="cnt" id="cnt">Belum ada tamu.</span>
+<span><button class="sm" id="cpall">Salin semua link</button> <button class="sm" id="clr">Reset terkirim</button></span></div>
+<div id="out"></div>
+</section>
+
+</main>
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var DEF="Assalaamualaikum Wr. Wb.\n\nKepada Yth.\n*{nama}*\n\nMaha suci Allah SWT yang telah menciptakan Makhluk-Nya berpasang-pasangan. Tanpa mengurangi rasa hormat, dengan ini kami bermaksud mengundang anda untuk hadir pada acara pernikahan kami:\n\n*Munir Fuady & Dini*\n*Alamul Huda & Fasikha*\n\nBerikut link undangan digital kami:\n{link}\n\nMerupakan kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.\n\nWassalaamualaikum Wr. Wb.";
+var K='ug_pernikahan_v1',sent={};
+function ls(g,v){try{if(v===undefined)return localStorage.getItem(K+g);localStorage.setItem(K+g,v)}catch(e){return null}}
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},1800)}
+function slug(n){return n.trim().replace(/\s+/g,'_').replace(/[^A-Za-z0-9_.~\-]/g,'')}
+function phone(p){var d=(p||'').replace(/\D/g,'');if(!d)return'';if(d.indexOf('62')===0)return d;if(d[0]==='0')return'62'+d.slice(1);if(d[0]==='8')return'62'+d;return d}
+function baseUrl(){var b=$('base').value.trim();return b.replace(/#.*$/,'')}
+function guests(){var seen={},out=[];$('list').value.split(/\n/).forEach(function(l){l=l.trim();if(!l)return;var p=l.split('|'),n=p[0].trim(),ph=phone(p[1]);if(!n)return;var k=n.toLowerCase();if(seen[k])return;seen[k]=1;out.push({n:n,ph:ph,s:slug(n)})});return out}
+function link(g){var b=baseUrl();return b?b+'#'+g.s:''}
+function msg(g){return $('tpl').value.split('{nama}').join(g.n).split('{link}').join(link(g)||'(isi link undangan di langkah 1)')}
+function copy(t,ok){function fb(){try{var x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();document.execCommand('copy');x.remove();toast(ok)}catch(e){toast('Gagal menyalin')}}
+try{navigator.clipboard.writeText(t).then(function(){toast(ok)},fb)}catch(e){fb()}}
+function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function render(){
+ var b=baseUrl(),gs=guests(),bh=$('bh');
+ if(b&&!/^https?:\/\//i.test(b)){bh.textContent='Link harus diawali http:// atau https://';bh.className='hint warn'}
+ else{bh.textContent='Tempel link undangan yang sudah dipublikasikan. Bagian setelah tanda # akan diganti otomatis.';bh.className='hint'}
+ var odd=gs.filter(function(g){return g.s.length<2}).length;
+ $('lh').textContent=gs.length?gs.length+' tamu terdeteksi'+(odd?' · '+odd+' nama tidak valid':'')+'.':'';
+ $('pv').textContent=gs.length?msg(gs[0]):'Isi daftar tamu untuk melihat pratinjau.';
+ var o=$('out');o.textContent='';
+ var done=gs.filter(function(g){return sent[g.s]}).length;
+ $('cnt').textContent=gs.length?gs.length+' tamu · '+done+' terkirim':'Belum ada tamu.';
+ gs.forEach(function(g){
+  var d=mk('div','g'+(sent[g.s]?' done':''));
+  d.appendChild(mk('div','gn',g.n));
+  d.appendChild(mk('div','gl',link(g)||'Isi link undangan dulu'));
+  var r=mk('div','');
+  var w=mk('a','btn sm wa','Kirim WhatsApp');
+  w.href='https://wa.me/'+g.ph+'?text='+encodeURIComponent(msg(g));w.target='_blank';w.rel='noopener';
+  w.onclick=function(e){if(!link(g)){e.preventDefault();toast('Isi link undangan dulu');return}
+   sent[g.s]=1;ls('sent',JSON.stringify(sent));setTimeout(render,50)};
+  var c=mk('button','sm','Salin pesan');c.onclick=function(){if(!link(g)){toast('Isi link undangan dulu');return}copy(msg(g),'Pesan disalin')};
+  var l=mk('button','sm','Salin link');l.onclick=function(){if(!link(g)){toast('Isi link undangan dulu');return}copy(link(g),'Link disalin')};
+  r.appendChild(w);r.appendChild(document.createTextNode(' '));r.appendChild(c);r.appendChild(document.createTextNode(' '));r.appendChild(l);
+  d.appendChild(r);o.appendChild(d)});
+}
+function save(){ls('base',$('base').value);ls('list',$('list').value);ls('tpl',$('tpl').value)}
+['base','list','tpl'].forEach(function(i){$(i).addEventListener('input',function(){save();render()})});
+document.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){var t=$('tpl'),s=t.selectionStart,e=t.selectionEnd,i=c.dataset.i;t.value=t.value.slice(0,s)+i+t.value.slice(e);t.focus();t.selectionStart=t.selectionEnd=s+i.length;save();render()}});
+$('rst').onclick=function(){$('tpl').value=DEF;save();render();toast('Format dikembalikan')};
+$('clr').onclick=function(){sent={};ls('sent','{}');render()};
+$('cpall').onclick=function(){var gs=guests();if(!gs.length||!baseUrl()){toast('Isi link dan daftar tamu dulu');return}copy(gs.map(function(g){return g.n+' — '+link(g)}).join('\n'),'Semua link disalin')};
+$('base').value=ls('base')||'';$('list').value=ls('list')||'';$('tpl').value=ls('tpl')||DEF;
+try{sent=JSON.parse(ls('sent')||'{}')||{}}catch(e){sent={}}
+render();
+})();
+</script>
+
+</body></html>
